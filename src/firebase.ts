@@ -1,7 +1,7 @@
-// src/firebase.js
+
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database"; // Import the Realtime Database SDK
-// import { getAuth } from "firebase/auth"; // Uncomment if you use Authentication
+import { getDatabase } from "firebase/database"; 
+import { getAuth, GoogleAuthProvider } from "firebase/auth"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQIxo37-3ZVsRcQ42qKMU7ZM7aSRxF8mI",
@@ -19,4 +19,9 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize and export the database so you can use it in other files
 export const database = getDatabase(app);
+
+// NEW: Initialize and export Auth and Google Provider for your Login page
+export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
+
 export default app;

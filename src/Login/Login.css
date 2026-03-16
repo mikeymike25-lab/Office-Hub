@@ -1,0 +1,323 @@
+body {
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background: #355872;
+    background-size: cover;
+}
+
+.nav-link,
+
+.navbar-brand {
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.navbar-brand img {
+    height: 70px;
+    width: auto;
+}
+
+#userprofile {
+    display: flex;
+    width: auto;
+    height: 90px;
+    overflow: justify;
+    margin-left: auto;
+}
+
+.nav-link {
+    margin-right: 2.5em !important;
+    font-size: 1.8rem;
+    color: #000000;
+
+}
+
+:root {
+    --dark: #355872;
+    --mid: #7AAACE;
+    --light: #9CD5FF;
+    --cream: #F7F8F0;
+    --green: #4ADE80;
+    --green-h: #22c55e;
+}
+
+/* ── RESET ── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ── NAVBAR ALIGNMENT ── */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+}
+
+/* ── MAIN ── */
+main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    background:
+        radial-gradient(ellipse 70% 55% at 50% 0%, rgba(122, 170, 206, .22) 0%, transparent 70%),
+        var(--dark);
+}
+
+/* ── CARD ── */
+.card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(247, 248, 240, .06);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(154, 213, 255, .18);
+    border-radius: 24px;
+    padding: 2.75rem 2.5rem 2.5rem;
+    box-shadow:
+        0 0 0 1px rgba(154, 213, 255, .05) inset,
+        0 32px 64px rgba(0, 0, 0, .35),
+        0 8px 16px rgba(0, 0, 0, .2);
+    animation: floatIn .55s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.card-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--cream);
+    letter-spacing: -.5px;
+}
+
+.card-header p {
+    margin-top: .4rem;
+    font-size: .83rem;
+    color: rgba(154, 213, 255, .65);
+    font-weight: 300;
+}
+
+/* ── FIELDS ── */
+.field {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.field-icon {
+    position: absolute;
+    left: .95rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--mid);
+    pointer-events: none;
+    display: flex;
+}
+
+.field input {
+    width: 100%;
+    padding: .85rem 2.8rem .85rem 2.75rem;
+    background: rgba(247, 248, 240, .07);
+    border: 1.5px solid rgba(154, 213, 255, .18);
+    border-radius: 12px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .9rem;
+    font-weight: 400;
+    outline: none;
+    transition: border-color .2s, background .2s;
+}
+
+.field input::placeholder {
+    color: rgba(247, 248, 240, .35);
+    font-size: .85rem;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+}
+
+.field input:focus {
+    border-color: var(--light);
+    background: rgba(154, 213, 255, .08);
+}
+
+.toggle-pw {
+    position: absolute;
+    right: .95rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(154, 213, 255, .5);
+    display: flex;
+    padding: 0;
+    transition: color .2s;
+}
+
+.toggle-pw:hover {
+    color: var(--light);
+}
+
+/* ── EXTRAS ── */
+.extras {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: .8rem;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    color: rgba(247, 248, 240, .5);
+    cursor: pointer;
+    user-select: none;
+}
+
+.remember input[type="checkbox"] {
+    accent-color: var(--green);
+    width: 14px;
+    height: 14px;
+}
+
+.forgot {
+    color: var(--light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color .2s;
+}
+
+.forgot:hover {
+    color: #fff;
+}
+
+/* ── BUTTON ── */
+.btn-login {
+    width: 100%;
+    padding: .9rem;
+    background: var(--green);
+    border: none;
+    border-radius: 12px;
+    color: #0f2e1a;
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: .5px;
+    cursor: pointer;
+    transition: background .2s, transform .15s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(74, 222, 128, .3);
+}
+
+.btn-login:hover {
+    background: var(--green-h);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(74, 222, 128, .4);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+}
+
+/* ── DIVIDER ── */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin: 1.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(154, 213, 255, .15);
+}
+
+.divider span {
+    font-size: .75rem;
+    color: rgba(247, 248, 240, .35);
+    white-space: nowrap;
+}
+
+/* ── SOCIAL ── */
+.social-row {
+    display: flex;
+    gap: .75rem;
+    justify-content: center;
+}
+
+.social-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: .7rem;
+    background: rgba(247, 248, 240, .06);
+    border: 1.5px solid rgba(154, 213, 255, .15);
+    border-radius: 11px;
+    color: rgba(247, 248, 240, .65);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .2s, border-color .2s, color .2s;
+    text-decoration: none;
+}
+
+.social-btn:hover {
+    background: rgba(154, 213, 255, .1);
+    border-color: rgba(154, 213, 255, .3);
+    color: var(--cream);
+}
+
+/* ── CARD FOOTER ── */
+.card-footer {
+    text-align: center;
+    margin-top: 1.75rem;
+    font-size: .82rem;
+    color: rgba(247, 248, 240, .4);
+}
+
+.card-footer a {
+    color: var(--light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color .2s;
+}
+
+.card-footer a:hover {
+    color: #fff;
+}
