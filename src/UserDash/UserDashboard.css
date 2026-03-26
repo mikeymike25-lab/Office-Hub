@@ -1,0 +1,407 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-image: url("src/assets/Images/Co-workingSpace.jpeg");
+    background-size: cover;
+}
+
+.navbar {
+    background: #355872;
+    background-size: cover;
+}
+
+.nav-link,
+
+.navbar-brand {
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.navbar-brand img {
+    height: 70px;
+    width: auto;
+}
+
+#userprofile {
+    display: flex;
+    width: auto;
+    height: 90px;
+    overflow: justify;
+}
+
+.nav-link {
+    margin-right: 2.5em !important;
+    font-size: 1.8rem;
+    color: #000000;
+
+}
+
+
+@media (max-width: 575.98px) {
+
+    .description {
+        left: 0;
+        padding: 0 15px;
+        position: absolute;
+        top: 10%;
+        transform: none;
+        text-align: center;
+    }
+
+    .description h1 {
+        font-size: 2em;
+    }
+
+    .description p {
+
+        font-size: 1.2rem;
+    }
+
+    .features {
+        margin: 0;
+    }
+
+}
+
+/* Dashboard layout */
+.dashboard-container {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 90px);
+    background: linear-gradient(180deg, rgba(53,88,114,0.15) 0%, rgba(247,248,240,0.75) 100%);
+    padding: 2rem 3rem;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.dashboard-sidebar {
+    flex: 0 0 320px;
+    max-width: 320px;
+    min-width: 240px;
+    background: rgba(231, 230, 230, 0.75);
+    border-radius: 1rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid rgba(53, 88, 114, 0.35);
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.profile-picture button {
+    border: none;
+    background: transparent;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.profile-picture button:hover {
+    filter: brightness(1.1);
+    opacity: 0.9;
+}
+
+.user-name {
+    font-size: 1.7rem;
+    margin: 0;
+    color: #1F2A37;
+}
+
+.dashboard-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.dashboard-link {
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    color: #1F2A37;
+    font-weight: 600;
+    background: rgba(53, 88, 114, 0.08);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dashboard-link:hover,
+.dashboard-link.active {
+    background: rgba(53, 88, 114, 0.25);
+    color: #0B1B2A;
+}
+
+.dashboard-main {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.edit-card {
+    width: 100%;
+    max-width: 860px;
+    background: rgba(231, 230, 230, 0.75);
+    border-radius: 1.4rem;
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.16);
+    padding: 2.2rem 2.4rem;
+    border: 1px solid rgba(53, 88, 114, 0.16);
+}
+
+.edit-card-header {
+    display: flex;
+    padding-bottom: 1.2rem;
+    border-bottom: 5px solid rgba(53, 88, 114, 0.25);
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: spacex -between;
+    gap: 1rem;
+    margin-bottom: 1.8rem;
+}
+
+.edit-card-header h1 {
+    font-size: 1.9rem;
+    margin: 0;
+    color: #1F2A37;
+}
+
+.save-btn {
+    background: #355872;
+    border: none;
+    color: white;
+    padding: 0.85rem 1.4rem;
+    border-radius: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.2s ease;
+}
+
+.save-btn:hover {
+    filter: brightness(1.1);
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-group.full-width {
+    flex: 1 1 100%;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #22303F;
+}
+
+.form-group input {
+    height: 3.6rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(53, 88, 114, 0.25);
+    padding: 0 1rem;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1F2A37;
+}
+
+.input-icon-wrapper {
+    position: relative;
+
+}
+
+.input-icon-wrapper input {
+    padding-right: 4rem;
+}
+
+.password-toggle {
+    position: static;
+    top: 50%;
+    right: 15rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: rgba(31, 42, 55, 0.65);
+    font-size: 1.15rem;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.password-toggle:hover {
+    color: rgba(31, 42, 55, 0.9);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.form-group input::placeholder {
+    color: rgba(31, 42, 55, 0.65);
+}
+
+@media (max-width: 992px) {
+    .dashboard-container {
+        flex-direction: column;
+        padding: 1.5rem;
+    }
+
+    .dashboard-sidebar {
+        width: 100%;
+    }
+
+    .edit-card {
+        width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 70%;
+    max-width: 500px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.modal-header {
+    display: flex; justify-content: center; 
+    background-color: #355872; 
+    padding-top: 20px; 
+    margin-top: 1rem;
+    margin-bottom: 20px; 
+    border-radius: 5px; 
+    border: 2px solid #1e3241;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* Drop area styles */
+.drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 40px;
+    margin-top: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+.drop-area:hover,
+.drop-area.dragover {
+    border-color: #355872;
+    background-color: #e9f4ff;
+}
+
+.drop-area p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.drop-area #fileLink {
+    color: #355872;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.image-preview {
+    text-align: center;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* Account options in Change Account Modal */
+.account-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.account-options button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.account-options .btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.account-options .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
