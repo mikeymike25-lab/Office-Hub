@@ -1,0 +1,153 @@
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#000;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+/* MODAL SIZE */
+
+.modal{
+    width:1000px; /* longer width */
+    background:#cecccc;
+    border-radius:22px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.8);
+    overflow:hidden;
+}
+
+/* HEADER */
+
+.modal-header{
+    background:#5f7c8f; /* darker like the image */
+    height:110px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+.modal-header h2{
+    color:rgb(12, 12, 12);
+    letter-spacing:6px;
+    font-size:30px;
+}
+
+/* ICON */
+
+.icon-circle{
+    position:absolute;
+    left:45px;
+    width:70px;
+    height:70px;
+    background:#e5e5e5;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+}
+
+/* BODY */
+
+.modal-body{
+    display:flex;
+    gap:60px;
+    padding:55px;
+}
+
+/* ROOM CARD */
+
+.room-card{
+    width:460px;
+    height:260px;
+    border-radius:20px;
+    background-image:url("https://images.unsplash.com/photo-1505693416388-ac5ce068fe85");
+    background-size:cover;
+    background-position:center;
+    position:relative;
+    box-shadow:0 12px 30px rgba(0,0,0,0.5);
+}
+
+/* DARK OVERLAY */
+
+.room-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    border-radius:20px;
+}
+
+/* ROOM TEXT */
+
+.room-text{
+    position:absolute;
+    left:50px;
+    bottom:50px;
+    color:white;
+    z-index:2;
+}
+
+.room-text h3{
+    margin:0 0 12px 0;
+    font-size:35px;
+}
+
+.room-text p{
+    margin:4px 0;
+    font-size:30px;
+}
+
+/* FORM */
+
+.form-section{
+    flex:1;
+}
+
+.form-section label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.form-section input{
+    width:100%;
+    padding:16px;
+    margin-bottom:22px;
+    border-radius:25px;
+    border:1px solid #888;
+    background:#dcdcdc;
+    font-size: 20px;
+}
+
+/* FOOTER */
+
+.modal-footer{
+    display:flex;
+    justify-content:space-between;
+    padding:0 55px 40px 55px;
+}
+
+button{
+    padding:15px 50px;
+    border:none;
+    border-radius:28px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* BUTTON COLORS */
+
+.cancel{
+    background:#3d5c70; 
+    color:white;
+}
+
+.calendar{
+    background:#6f97b5; 
+    color:white;
+}
