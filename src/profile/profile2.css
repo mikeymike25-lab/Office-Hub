@@ -1,0 +1,196 @@
+
+:root {
+    --primary: #435e7a;
+    --accent: #8da9c4;
+    --bg-blur: rgba(255, 255, 255, 0.7);
+    --text-dark: #1a2e44;
+}
+/* NAVBAR AND BACK GROUND DESIGN  */
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("../../public/Images/Co-workingSpace.jpeg");
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Navbar Centering */
+.navbar {
+    background: #355872;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 40px;
+    height: 90px;
+}
+
+.nav-section { flex: 1; display: flex; align-items: center; }
+.nav-section.center { justify-content: center; flex: 2; }
+.nav-section.right { justify-content: flex-end; }
+
+.calendar-title-text {
+    color: white;
+    font-weight: 900;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: 2px;
+}
+
+.navbar-brand img { height: 60px; width: auto; }
+#userprofilepic { height:70px; width: auto; border-radius: 50%; object-fit: cover; }
+
+/* PROFILE DESIGN */
+
+
+.profile-container {
+    width: 90%;
+    max-width: 1000px;
+    height: 80vh;
+}
+
+.profile-card {
+    display: flex;
+    background: var(--bg-blur);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    overflow: hidden;
+    height: 100%;
+}
+
+/* Main Content Area */
+.profile-main {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.btn-save {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.row {
+    display: flex;
+    gap: 20px;
+}
+
+.input-group {
+    flex: 1;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+textarea { height: 100px; resize: none; }
+
+/* Layout Wrapper to position sidebar and content side-by-side */
+.dashboard-wrapper {
+    display: flex;
+    min-height: calc(100vh - 90px); /* Adjusts for navbar height */
+}
+
+/* The Glass Panel where your content lives */
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.4); /* This makes the white box pop */
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 100%;
+    max-width: 800px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.glass-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--primary);
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+}
+
+/* The Read-Only Data Boxes */
+.display-group {
+    margin-bottom: 20px;
+}
+
+.display-group label {
+    display: block;
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+}
+
+.read-only-box {
+    background: rgba(255, 255, 255, 0.6); /* Slightly brighter than the panel */
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-size: 1.1rem;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+/* The "Edit Profile" button styled like your save button */
+.save-btn {
+    background-color: var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.save-btn:hover {
+    background-color: var(--accent);
+    color: white;
+}

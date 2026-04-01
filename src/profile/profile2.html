@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="profile2.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-section left">
+            <a class="navbar-brand" href="../ServiceDetails/ServiceDetails.html">
+                <img src="../../public/Images/officehublogo.png" alt="officehub">
+            </a>
+        </div>
+        <div class="nav-section center">
+            <h2 class="calendar-title-text">PROFILE</h2>
+        </div>
+        <div class="nav-section right">
+            <a href="../UserDash/UserDashboard.html">
+                <img src="../../public/Images/userprofile.png" alt="userprofile" id="userprofilepic">
+            </a>
+        </div>
+    </nav>
+
+    <div class="dashboard-wrapper">
+
+
+    <main class="main-content">
+        <div class="glass-panel">
+            <div class="glass-header">
+                <div class="user-info-text">
+                    <h2 id="headerFullName">USER NAME</h2>
+                    <p>Verified User Account</p>
+                </div>
+                <a href="dashboard.html" class="save-btn" style="text-decoration: none; text-align: center;">Edit Profile</a>
+            </div>
+
+            <div class="profile-display-grid">
+                <div class="display-group">
+                    <label>Full Name</label>
+                    <div class="read-only-box" id="viewFullName">Loading...</div>
+                </div>
+
+                <div class="display-group">
+                    <label>Email Address</label>
+                    <div class="read-only-box" id="viewEmail">Loading...</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="display-group">
+                        <label>Birthdate</label>
+                        <div class="read-only-box" id="viewBirthDate">-- / -- / ----</div>
+                    </div>
+                    <div class="display-group">
+                        <label>Account Status</label>
+                        <div class="read-only-box">Active</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+  <script src="profile2.js"></script>
+  </body>
+</html>
