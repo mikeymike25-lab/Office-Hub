@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { auth, googleProvider } from '../firebase'; 
 import { signInWithPopup, signInWithEmailAndPassword, FacebookAuthProvider } from 'firebase/auth';
-import { Link } from 'react-router-dom'; // 1. Added Link for navigation
+// Added useNavigate here:
+import { Link, useNavigate } from 'react-router-dom'; 
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>(''); 
+  
+  // Initialize the navigate function
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -36,7 +40,8 @@ const Login: React.FC = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("Logged in user:", userCredential.user);
-      alert("Manual Login Successful!"); 
+      // REDIRECT TO DASHBOARD ON SUCCESS
+      navigate('/dashboard'); 
     } catch (error: any) {
       setErrorMsg(error.message);
     }
@@ -49,7 +54,8 @@ const Login: React.FC = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log("Google Sign-In Success:", result.user);
-      alert(`Welcome ${result.user.displayName}! Google Login Successful!`);
+      // REDIRECT TO DASHBOARD ON SUCCESS
+      navigate('/dashboard');
     } catch (error: any) {
       console.error("Error during Google Sign-in:", error);
       setErrorMsg("Google Sign-in failed. Please try again.");
@@ -65,7 +71,8 @@ const Login: React.FC = () => {
     try {
       const result = await signInWithPopup(auth, facebookProvider);
       console.log("Facebook Sign-In Success:", result.user);
-      alert(`Welcome ${result.user.displayName}! Facebook Login Successful!`);
+      // REDIRECT TO DASHBOARD ON SUCCESS
+      navigate('/dashboard');
     } catch (error: any) {
       console.error("Error during Facebook Sign-in:", error);
       if (error.code === 'auth/account-exists-with-different-credential') {
@@ -107,10 +114,10 @@ const Login: React.FC = () => {
         {/* Main Content Area */}
         <main className="flex-1 flex items-center justify-center p-12 bg-[radial-gradient(ellipse_70%_55%_at_50%_0%,rgba(122,170,206,.22)_0%,transparent_70%),#355872]">
           
-          {/* Card - Added "relative" so we can position the back arrow inside it */}
+          {/* Card */}
           <div className="relative w-full max-w-[420px] bg-[#F7F8F0]/5 backdrop-blur-[18px] border border-[#9CD5FF]/20 rounded-[24px] px-10 pt-11 pb-10 shadow-[inset_0_0_0_1px_rgba(154,213,255,.05),0_32px_64px_rgba(0,0,0,.35),0_8px_16px_rgba(0,0,0,.2)] animate-float-in">
             
-            {/* 2. NEW Back Arrow Button */}
+            {/* Back Arrow Button */}
             <Link 
               to="/" 
               className="absolute top-6 left-6 text-[#9CD5FF]/60 hover:text-white transition-colors duration-200"
