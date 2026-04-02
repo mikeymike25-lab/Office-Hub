@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Selection</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="Service_Select.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-section left">
+            <a class="navbar-brand" href="../ServiceDetails/ServiceDetails.html">
+                <img src="../../public/Images/officehublogo.png" alt="officehub">
+            </a>
+        </div>
+        <div class="nav-section center">
+            <h2 class="calendar-title-text">BOOKING</h2>
+        </div>
+        <div class="nav-section right">
+            <a href="../UserDash/UserDashboard.html">
+                <img src="../../public/Images/userprofile.png" alt="userprofile" id="userprofilepic">
+            </a>
+        </div>
+    </nav>
+    
+
+
+    <section class="filter-bar">
+        <div class="filter-group">
+            <label>CATEGORY:</label>
+            <div class="custom-select">
+                <select>
+                    <option>PRIVATE OFFICES</option>
+                    <option>CO-WORKING DESK</option>
+                    <option>MEETING ROOM</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label>Duration:</label>
+            <div class="custom-select">
+                <select>
+                    <option>WEEKLY</option>
+                    <option>DAILY</option>
+                    <option>MONTHLY</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label>PRICE:</label>
+            <div class="custom-select">
+                <select>
+                    <option>100$ - 500$</option>
+                    <option>500$ - 1000$</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label>CAPACITY:</label>
+            <div class="custom-select">
+                <select>
+                    <option>1 - 5</option>
+                    <option>6 - 10</option>
+                    <option>10+</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <main class="services-container">
+        <div class="service-card" 
+     onclick="openModal(this)" 
+     data-title="Quiet Corner" 
+     data-duration="weekly" 
+     data-price="100$" 
+     data-capacity="2" 
+     data-img="../../public/Images/drafroom.png"
+     style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../../public/Images/drafroom.png');">
+    <div class="card-content">
+        <h2>Quiet Corner</h2>
+        <p>Duration: weekly</p>
+        <p>Price: 100$</p>
+        <p>Capacity: 2</p>
+    </div>
+</div>
+
+<div class="service-card" 
+     onclick="openModal(this)" 
+     data-title="Dedication desk" 
+     data-duration="weekly" 
+     data-price="300$" 
+     data-capacity="5" 
+     data-img="../../public/Images/meetroom.png"
+     style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../../public/Images/meetroom.png');">
+    <div class="card-content">
+        <h2>Dedication desk</h2>
+        <p>Duration: weekly</p>
+        <p>Price: 300$</p>
+        <p>Capacity: 5</p>
+    </div>
+</div>
+</div>
+    </main>
+
+    <div class="scroll-arrow">∨</div>
+<div id="bookingModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="confirm-badge">
+                <div class="badge-icon">📋</div>
+                <h2>CONFIRM</h2>
+            </div>
+        </div>
+
+        <div class="modal-body">
+            <div class="selection-preview" id="modal-preview-bg">
+    <div class="preview-text">
+        <h3 id="modal-title">---</h3>
+        <p id="modal-duration">Duration: ---</p>
+        <p id="modal-price">Price: ---</p>
+        <p id="modal-capacity">Capacity: ---</p>
+    </div>
+</div>
+
+            <form class="booking-form">
+                <div class="form-input-group">
+                    <label>Name of customer</label>
+                    <input type="text" placeholder="name">
+                </div>
+                <div class="form-input-group">
+                    <label>Contact</label>
+                    <input type="text" placeholder="Phone no / gmail">
+                </div>
+                <div class="form-input-group">
+                    <label>company</label>
+                    <input type="text" placeholder="optional...">
+                </div>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="closeModal()">CANCEL</button>
+            <button class="btn-calendar" onclick="window.location.href='../calendar/calendar.html';">CALLENDAR</button>
+        </div>
+    </div>
+</div>
+  <script src="Service_Select.js"></script>
+  </body>
+</html>
