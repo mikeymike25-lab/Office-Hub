@@ -1,6 +1,104 @@
 import './ServiceDetails.css';
+import { useState } from 'react';
 
 export default function ServiceDetails() {
+  const [activeTab, setActiveTab] = useState('offers');
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'offers':
+        return (
+          <div className="tab-pane fade show active" role="tabpanel">
+            <h3 className="tab-pane-header">Service Offers</h3>
+            <h5>Here are the services we offer:</h5>
+            <ul>
+              <li>Office Space Rental</li>
+              <li>Meeting Room Bookings</li>
+              <li>Virtual Office Services</li>
+              <li>Mail Handling</li>
+              <li>Administrative Support</li>
+            </ul>
+            <p>Contact us for more details on pricing and availability.</p>
+          </div>
+        );
+      case 'policies':
+        return (
+          <div className="tab-pane fade show active" role="tabpanel">
+            <h3 className="tab-pane-header">Website Policies</h3>
+            <h5>Confidentiality Agreements:</h5>
+            <ul>
+              <li>All members must sign a confidentiality agreement before accessing any proprietary information.</li>
+            </ul>
+            <h5>Payment Terms:</h5>
+            <ul>
+              <li>Payments must be made in advance for all services.</li>
+              <li>
+                We accept credit cards, bank transfers, e-cash, and cash payments. (ie. GCash, MasterCard, BPI, BDO)
+              </li>
+            </ul>
+            <h5>Cancellation and Refund Policies:</h5>
+            <ul>
+              <li>Cancellations made more than 24 hours before the scheduled time will be eligible for a full refund.</li>
+              <li>Cancellations made within 24 hours of the scheduled time will not be eligible for a refund.</li>
+            </ul>
+          </div>
+        );
+      case 'guidelines':
+        return (
+          <div className="tab-pane fade show active" role="tabpanel">
+            <h3 className="tab-pane-header">Guidelines</h3>
+            <h5>Please follow these guidelines while using our facilities:</h5>
+            <ul>
+              <li>No smoking policy</li>
+              <li>Keep common areas clean</li>
+              <li>Book resources in advance</li>
+              <li>Report any issues promptly</li>
+              <li>Use equipment responsibly</li>
+            </ul>
+          </div>
+        );
+      case 'contact':
+        return (
+          <div className="tab-pane fade show active" role="tabpanel">
+            <h3 className="tab-pane-header">Contact Information</h3>
+            <h5>Get in touch with us:</h5>
+            <p>
+              <strong>Address:</strong> Saint Joseph Street, Angeles City, Pampanga 2009 Philippines
+            </p>
+            <p>
+              <strong>Phone:</strong> (02) 8271 1411
+            </p>
+            <p>
+              <strong>Email:</strong> office-hub@gmail.com
+            </p>
+            <p>
+              <strong>Additional:</strong> 4HMP+WV Angeles City, Pampanga, mtlim@gmail.com, 0908-384-1752
+            </p>
+          </div>
+        );
+      case 'faq':
+        return (
+          <div className="tab-pane fade show active" role="tabpanel">
+            <h3 className="tab-pane-header">Frequently Asked Questions</h3>
+            <p>
+              <strong>Q: How do I book a meeting room?</strong>
+            </p>
+            <p>A: You can book through our online portal or contact our admin team.</p>
+            <p>
+              <strong>Q: What are the available hours?</strong>
+            </p>
+            <p>A: We are open from Monday to Saturday, 8 AM-7 PM.</p>
+            <p>
+              <strong>Q: Is parking available?</strong>
+            </p>
+            <p>A: Yes, we have on-site parking for members.</p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       {/* Primary Navigation Bar */}
@@ -56,182 +154,50 @@ export default function ServiceDetails() {
             {/* Service Details Navigation Tabs */}
             <div className="col-md-3">
               <div className="service-details-nav">
-                <div
-                  className="nav flex-column nav-pills"
-                  id="v-pills-tab"
-                  role="tablist"
-                  aria-orientation="vertical"
-                >
-                  <a
-                    className="nav-link active"
-                    id="v-pills-offers-tab"
-                    data-toggle="pill"
-                    href="#v-pills-offers"
+                <div className="nav flex-column nav-pills" role="tablist">
+                  <button
+                    className={`nav-link ${activeTab === 'offers' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('offers')}
                     role="tab"
-                    aria-controls="v-pills-offers"
-                    aria-selected="true"
                   >
                     Service Offers
-                  </a>
-                  <a
-                    className="nav-link"
-                    id="v-pills-policies-tab"
-                    data-toggle="pill"
-                    href="#v-pills-policies"
+                  </button>
+                  <button
+                    className={`nav-link ${activeTab === 'policies' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('policies')}
                     role="tab"
-                    aria-controls="v-pills-policies"
-                    aria-selected="false"
                   >
                     Website Policies
-                  </a>
-                  <a
-                    className="nav-link"
-                    id="v-pills-guidelines-tab"
-                    data-toggle="pill"
-                    href="#v-pills-guidelines"
+                  </button>
+                  <button
+                    className={`nav-link ${activeTab === 'guidelines' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('guidelines')}
                     role="tab"
-                    aria-controls="v-pills-guidelines"
-                    aria-selected="false"
                   >
                     Guidelines
-                  </a>
-                  <a
-                    className="nav-link"
-                    id="v-pills-contact-tab"
-                    data-toggle="pill"
-                    href="#v-pills-contact"
+                  </button>
+                  <button
+                    className={`nav-link ${activeTab === 'contact' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('contact')}
                     role="tab"
-                    aria-controls="v-pills-contact"
-                    aria-selected="false"
                   >
                     Contact Info
-                  </a>
-                  <a
-                    className="nav-link"
-                    id="v-pills-faq-tab"
-                    data-toggle="pill"
-                    href="#v-pills-faq"
+                  </button>
+                  <button
+                    className={`nav-link ${activeTab === 'faq' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('faq')}
                     role="tab"
-                    aria-controls="v-pills-faq"
-                    aria-selected="false"
                   >
                     FAQ
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
 
             {/* Tab Content */}
             <div className="col-md-9">
-              <div className="tab-content" id="v-pills-tabContent">
-                {/* Service Offers Tab */}
-                <div
-                  className="tab-pane fade show active"
-                  id="v-pills-offers"
-                  role="tabpanel"
-                  aria-labelledby="v-pills-offers-tab"
-                >
-                  <h3 className="tab-pane-header">Service Offers</h3>
-                  <h5>Here are the services we offer:</h5>
-                  <ul>
-                    <li>Office Space Rental</li>
-                    <li>Meeting Room Bookings</li>
-                    <li>Virtual Office Services</li>
-                    <li>Mail Handling</li>
-                    <li>Administrative Support</li>
-                  </ul>
-                  <p>Contact us for more details on pricing and availability.</p>
-                </div>
-
-                {/* Website Policies Tab */}
-                <div
-                  className="tab-pane fade"
-                  id="v-pills-policies"
-                  role="tabpanel"
-                  aria-labelledby="v-pills-policies-tab"
-                >
-                  <h3 className="tab-pane-header">Website Policies</h3>
-                  <h5>Confidentiality Agreements:</h5>
-                  <ul>
-                    <li>All members must sign a confidentiality agreement before accessing any proprietary information.</li>
-                  </ul>
-                  <h5>Payment Terms:</h5>
-                  <ul>
-                    <li>Payments must be made in advance for all services.</li>
-                    <li>
-                      We accept credit cards, bank transfers, e-cash, and cash payments. (ie. GCash, MasterCard, BPI, BDO)
-                    </li>
-                  </ul>
-
-                  <h5>Cancellation and Refund Policies:</h5>
-                  <ul>
-                    <li>Cancellations made more than 24 hours before the scheduled time will be eligible for a full refund.</li>
-                    <li>Cancellations made within 24 hours of the scheduled time will not be eligible for a refund.</li>
-                  </ul>
-                </div>
-
-                {/* Guidelines Tab */}
-                <div
-                  className="tab-pane fade"
-                  id="v-pills-guidelines"
-                  role="tabpanel"
-                  aria-labelledby="v-pills-guidelines-tab"
-                >
-                  <h3 className="tab-pane-header">Guidelines</h3>
-                  <h5>Please follow these guidelines while using our facilities:</h5>
-                  <ul>
-                    <li>No smoking policy</li>
-                    <li>Keep common areas clean</li>
-                    <li>Book resources in advance</li>
-                    <li>Report any issues promptly</li>
-                    <li>Use equipment responsibly</li>
-                  </ul>
-                </div>
-
-                {/* Contact Info Tab */}
-                <div
-                  className="tab-pane fade"
-                  id="v-pills-contact"
-                  role="tabpanel"
-                  aria-labelledby="v-pills-contact-tab"
-                >
-                  <h3 className="tab-pane-header">Contact Information</h3>
-                  <h5>Get in touch with us:</h5>
-                  <p>
-                    <strong>Address:</strong> Saint Joseph Street, Angeles City, Pampanga 2009 Philippines
-                  </p>
-                  <p>
-                    <strong>Phone:</strong> (02) 8271 1411
-                  </p>
-                  <p>
-                    <strong>Email:</strong> office-hub@gmail.com
-                  </p>
-                  <p>
-                    <strong>Additional:</strong> 4HMP+WV Angeles City, Pampanga, mtlim@gmail.com, 0908-384-1752
-                  </p>
-                </div>
-
-                {/* FAQ Tab */}
-                <div
-                  className="tab-pane fade"
-                  id="v-pills-faq"
-                  role="tabpanel"
-                  aria-labelledby="v-pills-faq-tab"
-                >
-                  <h3 className="tab-pane-header">Frequently Asked Questions</h3>
-                  <p>
-                    <strong>Q: How do I book a meeting room?</strong>
-                  </p>
-                  <p>A: You can book through our online portal or contact our admin team.</p>
-                  <p>
-                    <strong>Q: What are the available hours?</strong>
-                  </p>
-                  <p>A: We are open from Monday to Saturday, 8 AM-7 PM.</p>
-                  <p>
-                    <strong>Q: Is parking available?</strong>
-                  </p>
-                  <p>A: Yes, we have on-site parking for members.</p>
-                </div>
+              <div className="tab-content">
+                {renderTabContent()}
               </div>
             </div>
           </div>
