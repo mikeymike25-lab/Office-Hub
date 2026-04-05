@@ -6,6 +6,37 @@ import { auth } from '../firebase'; // Make sure this path points to your fireba
 const UserDashboard: React.FC = () => {
   // --- STATE MANAGEMENT ---
   
+  // 1. Create a state to hold the form data
+const [profileData, setProfileData] = useState({
+  firstName: localStorage.getItem("profile_firstName") || "",
+  lastName: localStorage.getItem("profile_lastName") || "",
+  phone: localStorage.getItem("profile_phone") || "",
+  birthdate: localStorage.getItem("profile_birthdate") || "",
+});
+
+// 1.5. This handles the typing in the modal inputs
+const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { id, value } = e.target;
+  setProfileData((prev) => ({
+    ...prev,
+    [id]: value,
+  }));
+};
+
+// 2. This is the "saveProfile" function
+const saveProfile = (e: React.FormEvent) => {
+  e.preventDefault(); // Prevents the page from reloading
+
+  // Save each piece of data to LocalStorage
+  localStorage.setItem("profile_firstName", profileData.firstName);
+  localStorage.setItem("profile_lastName", profileData.lastName);
+  localStorage.setItem("profile_phone", profileData.phone);
+  localStorage.setItem("profile_birthdate", profileData.birthdate);
+
+  
+  alert("Profile Updated Successfully!");
+  setActiveModal(null); // Close the modal after saving
+};
   // User State from Firebase
   const [user, setUser] = useState<any>(null);
 
@@ -95,6 +126,7 @@ const UserDashboard: React.FC = () => {
     }
   };
 
+
   // Sign Out logic
   const handleSignOut = async () => {
     try {
@@ -131,7 +163,7 @@ const UserDashboard: React.FC = () => {
 
           {/* Profile Picture - Fixed alignment and sizing */}
           <div className="flex items-center h-full">
-            <Link to="/dashboard" className="flex items-center justify-center transition-transform hover:scale-105">
+            <Link to="/profile" className="flex items-center justify-center transition-transform hover:scale-105">
               <img 
                 src={profileImage} 
                 alt="userprofile" 
@@ -167,9 +199,12 @@ const UserDashboard: React.FC = () => {
             </div>
 
             <nav className="flex flex-col gap-3">
-              <button className="py-3 px-4 rounded-xl text-left font-semibold text-[#0B1B2A] bg-[#35587240] transition-colors border-none cursor-pointer">
+              <button className="py-3 px-4 rounded-xl text-left font-semibold text-[#1F2A37] bg-[#35587214] transition-colors hover:bg-[#35587240] hover:text-[#0B1B2A] border-none cursor-pointer" onClick={() => navigate('/profile')}>
                 User Profile
               </button>
+              <button className="py-3 px-4 rounded-xl text-left font-semibold text-[#1F2A37] bg-[#35587214] transition-colors hover:bg-[#35587240] hover:text-[#0B1B2A] border-none cursor-pointer" onClick={() => navigate('/services')}>
+                Book Now
+             </button>
               <button className="py-3 px-4 rounded-xl text-left font-semibold text-[#1F2A37] bg-[#35587214] transition-colors hover:bg-[#35587240] hover:text-[#0B1B2A] border-none cursor-pointer" onClick={() => setActiveModal('account')}>
                 Change Account
               </button>
@@ -179,72 +214,112 @@ const UserDashboard: React.FC = () => {
             </nav>
           </aside>
 
-          {/* Main Content (Edit Card) */}
-          <main className="flex-1 w-full flex items-start justify-center">
-            <div className="w-full max-w-[860px] bg-[#e7e6e6bf] rounded-[1.4rem] shadow-2xl py-8 px-6 md:px-10 border border-[#35587229] backdrop-blur-sm">
-              <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b-4 border-[#35587240] mb-8">
-                <h1 className="text-2xl md:text-3xl font-extrabold m-0 text-[#1F2A37]">User Profile</h1>
-                <button className="bg-[#355872] border-none text-white py-3 px-6 rounded-xl font-bold cursor-pointer transition-all hover:brightness-110 hover:-translate-y-0.5 shadow-md" onClick={() => setActiveModal('editProfile')}>
-                  Edit Profile
-                </button>
-              </div>
+         {/* Main Content (Edit Card) */}
+<main className="flex-1 w-full flex items-start justify-center">
+  <div className="w-full max-w-[860px] bg-[#e7e6e6bf] rounded-[1.4rem] shadow-2xl py-8 px-6 md:px-10 border border-[#35587229] backdrop-blur-sm">
+    <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b-4 border-[#35587240] mb-8">
+      <h1 className="text-2xl md:text-3xl font-extrabold m-0 text-[#1F2A37]">User Profile</h1>
+      <button 
+      type="button" // <--- Add this to prevent accidental form submission
+        className="bg-[#355872] border-none text-white py-3 px-6 rounded-xl font-bold cursor-pointer transition-all hover:brightness-110 hover:-translate-y-0.5 shadow-md" 
+        onClick={() => setActiveModal('editProfile')}
+      >
+        Edit Profile
+      </button>
+    </div>
 
-              <form className="flex flex-col gap-6">
-                <div className="flex flex-col md:flex-row gap-5">
-                  <div className="flex-1 flex flex-col gap-2">
-                    <label htmlFor="username" className="font-semibold text-[#22303F]">Username</label>
-                    <input id="username" type="text" value={user?.displayName || "User-Name"} readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
-                  </div>
-                  <div className="flex-1 flex flex-col gap-2">
-                    <label htmlFor="email" className="font-semibold text-[#22303F]">Email</label>
-                    <input id="email" type="email" value={user?.email || "YourEmail@gmail.com"} readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
-                  </div>
-                </div>
+    <form className="flex flex-col gap-6">
+      <div className="flex flex-col md:flex-row gap-5">
+        <div className="flex-1 flex flex-col gap-2">
+          <label htmlFor="username" className="font-semibold text-[#22303F]">Username</label>
+          <input 
+            id="username" 
+            type="text" 
+            value={user?.displayName || "User-Name"} 
+            readOnly 
+            className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" 
+          />
+        </div>
+        <div className="flex-1 flex flex-col gap-2">
+          <label htmlFor="email" className="font-semibold text-[#22303F]">Email</label>
+          <input 
+            id="email" 
+            type="email" 
+            value={user?.email || "YourEmail@gmail.com"} 
+            readOnly 
+            className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" 
+          />
+        </div>
+      </div>
 
-                <div className="flex flex-col md:flex-row gap-5">
-                  <div className="flex-1 flex flex-col gap-2">
-                    <label htmlFor="firstName" className="font-semibold text-[#22303F]">First Name</label>
-                    <input id="firstName" type="text" placeholder="First-Name" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
-                  </div>
-                  <div className="flex-1 flex flex-col gap-2">
-                    <label htmlFor="lastName" className="font-semibold text-[#22303F]">Last Name</label>
-                    <input id="lastName" type="text" placeholder="Last-Name" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
-                  </div>
-                </div>
+      <div className="flex flex-col md:flex-row gap-5">
+        <div className="flex-1 flex flex-col gap-2">
+          <label htmlFor="firstName" className="font-semibold text-[#22303F]">First Name</label>
+          <input 
+            id="firstName" 
+            type="text" 
+            value={profileData.firstName || "Not Set"} 
+            readOnly 
+            className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" 
+          />
+        </div>
+        <div className="flex-1 flex flex-col gap-2">
+          <label htmlFor="lastName" className="font-semibold text-[#22303F]">Last Name</label>
+          <input 
+            id="lastName" 
+            type="text" 
+            value={profileData.lastName || "Not Set"} 
+            readOnly 
+            className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" 
+          />
+        </div>
+      </div>
 
-                <div className="flex flex-col md:flex-row gap-5">
-                  <div className="flex-1 flex flex-col gap-2">
-                    <label htmlFor="birthdate" className="font-semibold text-[#22303F]">Birthdate</label>
-                    <input id="birthdate" type="date" placeholder="MM/DD/YYYY" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
-                  </div>
-                  <div className="flex-1 flex flex-col gap-2">
-                    <label htmlFor="phone" className="font-semibold text-[#22303F]">Phone Number</label>
-                    <input id="phone" type="tel" placeholder="0912-345-6789" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
-                  </div>
-                </div>
+      <div className="flex flex-col md:flex-row gap-5">
+        <div className="flex-1 flex flex-col gap-2">
+          <label htmlFor="birthdate" className="font-semibold text-[#22303F]">Birthdate</label>
+          <input 
+            id="birthdate" 
+            type="text" 
+            value={profileData.birthdate || "MM/DD/YYYY"} 
+            readOnly 
+            className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" 
+          />
+        </div>
+        <div className="flex-1 flex flex-col gap-2">
+          <label htmlFor="phone" className="font-semibold text-[#22303F]">Phone Number</label>
+          <input 
+            id="phone" 
+            type="tel" 
+            value={profileData.phone || "0912-345-6789"} 
+            readOnly 
+            className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" 
+          />
+        </div>
+      </div>
 
-                <div className="flex flex-col md:flex-row gap-5">
-                  <div className="w-full flex flex-col gap-2">
-                    <label htmlFor="password" className="font-semibold text-[#22303F]">Password</label>
-                    <div className="relative w-full">
-                      <input 
-                        id="password" 
-                        type={showPassword ? "text" : "password"} 
-                        value="***************" 
-                        readOnly 
-                        className="h-14 rounded-2xl border border-[#35587240] px-4 pr-12 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80 tracking-widest"
-                      />
-                      <i 
-                        className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-[#1F2A37]/60 text-lg hover:text-[#1F2A37] hover:scale-110 transition-all`} 
-                        onClick={() => setShowPassword(!showPassword)}
-                        title="Show/hide password"
-                      ></i>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </main>
+      <div className="flex flex-col md:flex-row gap-5">
+        <div className="w-full flex flex-col gap-2">
+          <label htmlFor="password" className="font-semibold text-[#22303F]">Password</label>
+          <div className="relative w-full">
+            <input 
+              id="password" 
+              type={showPassword ? "text" : "password"} 
+              value="***************" 
+              readOnly 
+              className="h-14 rounded-2xl border border-[#35587240] px-4 pr-12 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80 tracking-widest"
+            />
+            <i 
+              className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-[#1F2A37]/60 text-lg hover:text-[#1F2A37] hover:scale-110 transition-all`} 
+              onClick={() => setShowPassword(!showPassword)}
+              title="Show/hide password"
+            ></i>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
         </div>
       </div>
 
@@ -333,72 +408,77 @@ const UserDashboard: React.FC = () => {
       )}
 
       {/* 4. Edit Profile Modal */}
-      {activeModal === 'editProfile' && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onClick={closeModal}>
-          <div className="bg-white p-6 md:p-8 rounded-2xl w-full max-w-[700px] text-center relative shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="bg-[#355872] py-4 px-6 rounded-lg border-2 border-[#1e3241] flex justify-center items-center mb-6">
-              <h2 className="text-white font-bold text-xl m-0">Edit Profile Details</h2>
-            </div>
-            
-            <form className="flex flex-col gap-5 text-left mt-2">
-              <div className="flex flex-col md:flex-row gap-5">
-                <div className="flex-1 flex flex-col gap-2">
-                  <label className="font-semibold text-[#22303F]">Username</label>
-                  <input type="text" placeholder="User-Name" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
-                </div>
-                <div className="flex-1 flex flex-col gap-2">
-                  <label className="font-semibold text-[#22303F]">Email</label>
-                  <input type="email" placeholder="YourEmail@gmail.com" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
-                </div>
-              </div>
-
-              <div className="flex flex-col md:flex-row gap-5">
-                <div className="flex-1 flex flex-col gap-2">
-                  <label className="font-semibold text-[#22303F]">First Name</label>
-                  <input type="text" placeholder="First-Name" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
-                </div>
-                <div className="flex-1 flex flex-col gap-2">
-                  <label className="font-semibold text-[#22303F]">Last Name</label>
-                  <input type="text" placeholder="Last-Name" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
-                </div>
-              </div>
-
-              <div className="flex flex-col md:flex-row gap-5">
-                <div className="flex-1 flex flex-col gap-2">
-                  <label className="font-semibold text-[#22303F]">Birthdate</label>
-                  <input type="date" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
-                </div>
-                <div className="flex-1 flex flex-col gap-2">
-                  <label className="font-semibold text-[#22303F]">Phone Number</label>
-                  <input type="tel" placeholder="0912-345-6789" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
-                </div>
-              </div>
-
-              <div className="flex flex-col md:flex-row gap-5">
-                <div className="w-full flex flex-col gap-2">
-                  <label className="font-semibold text-[#22303F]">Password</label>
-                  <div className="relative w-full">
-                    <input 
-                      type={showEditPassword ? "text" : "password"} 
-                      placeholder="***************" 
-                      className="h-12 rounded-xl border border-gray-300 px-4 pr-12 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full tracking-widest"
-                    />
-                    <i 
-                      className={`fas ${showEditPassword ? 'fa-eye-slash' : 'fa-eye'} absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-800 hover:scale-110 transition-all text-lg`} 
-                      onClick={() => setShowEditPassword(!showEditPassword)}
-                    ></i>
-                  </div>
-                </div>
-              </div>
-            </form>
-            
-            <div className="flex justify-center gap-4 mt-8 pt-6 border-t border-gray-200">
-              <button className="bg-gray-200 hover:bg-gray-300 border-none text-gray-800 py-3 px-8 rounded-xl font-bold transition-colors cursor-pointer" onClick={closeModal}>Cancel</button>
-              <button className="bg-[#355872] hover:brightness-110 border-none text-white py-3 px-8 rounded-xl font-bold transition-all shadow-md cursor-pointer hover:-translate-y-0.5">Save Changes</button>
-            </div>
+{activeModal === 'editProfile' && (
+  <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onClick={closeModal}>
+    <div className="bg-white p-6 md:p-8 rounded-2xl w-full max-w-[700px] text-center relative shadow-2xl" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-[#355872] py-4 px-6 rounded-lg border-2 border-[#1e3241] flex justify-center items-center mb-6">
+        <h2 className="text-white font-bold text-xl m-0">Edit Profile Details</h2>
+      </div>
+      
+      <form className="flex flex-col gap-5 text-left mt-2" onSubmit={(e) => e.preventDefault()}>
+        <div className="flex flex-col md:flex-row gap-5">
+          <div className="flex-1 flex flex-col gap-2">
+            <label className="font-semibold text-[#22303F]">First Name</label>
+            <input 
+              id="firstName"
+              type="text" 
+              value={profileData.firstName}
+              onChange={handleInputChange}
+              placeholder="First-Name" 
+              className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" 
+            />
+          </div>
+          <div className="flex-1 flex flex-col gap-2">
+            <label className="font-semibold text-[#22303F]">Last Name</label>
+            <input 
+              id="lastName"
+              type="text" 
+              value={profileData.lastName}
+              onChange={handleInputChange}
+              placeholder="Last-Name" 
+              className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" 
+            />
           </div>
         </div>
-      )}
+
+        <div className="flex flex-col md:flex-row gap-5">
+          <div className="flex-1 flex flex-col gap-2">
+            <label className="font-semibold text-[#22303F]">Birthdate</label>
+            <input 
+              id="birthdate"
+              type="date" 
+              value={profileData.birthdate}
+              onChange={handleInputChange}
+              className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" 
+            />
+          </div>
+          <div className="flex-1 flex flex-col gap-2">
+            <label className="font-semibold text-[#22303F]">Phone Number</label>
+            <input 
+              id="phone"
+              type="tel" 
+              value={profileData.phone}
+              onChange={handleInputChange}
+              placeholder="0912-345-6789" 
+              className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" 
+            />
+          </div>
+        </div>
+      </form>
+      
+      <div className="flex justify-center gap-4 mt-8 pt-6 border-t border-gray-200">
+        <button className="bg-gray-200 hover:bg-gray-300 border-none text-gray-800 py-3 px-8 rounded-xl font-bold transition-colors cursor-pointer" onClick={closeModal}>Cancel</button>
+        {/* Call saveProfile here */}
+        <button 
+          className="bg-[#355872] hover:brightness-110 border-none text-white py-3 px-8 rounded-xl font-bold transition-all shadow-md cursor-pointer hover:-translate-y-0.5"
+          onClick={saveProfile}
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
     </div>
   );

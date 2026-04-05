@@ -11,6 +11,8 @@ import UserDashboard from './Dashboard/UserDashboard';
 // ADDED: Import your new SignUp component
 import ServiceSelection from './Service_Select/ServiceSelection'; 
 import Calendar from './calendar/Calendar';
+import Payment from './payment/Payment';
+import ViewProfile from './profile/ViewProfile';
 
 // Make sure this path matches where you saved the SignUp.tsx file!
 import SignUp from './SignUp/SignUp'; 
@@ -85,6 +87,8 @@ const App: React.FC = () => {
           path="/calendar" 
           element={user ? <Calendar /> : <Navigate to="/login" replace />} 
           />
+          <Route path="/payment" element={user ? <Payment /> : <Navigate to="/login" replace />} />
+          <Route path="/profile" element={user ? <ViewProfile /> : <Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
