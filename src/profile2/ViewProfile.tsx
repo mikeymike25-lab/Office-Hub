@@ -54,7 +54,7 @@ const ViewProfile: React.FC = () => {
              />
              <h3 className="text-2xl font-bold">{details.username}</h3>
              <p className="opacity-70 text-sm">{details.email}</p>
-             <div className="mt-8 bg-white/10 p-4 rounded-xl w-full">
+             <div classNa   me="mt-8 bg-white/10 p-4 rounded-xl w-full">
                 <p className="text-[10px] uppercase tracking-widest opacity-60">Account Type</p>
                 <p className="font-bold">Premium Member</p>
              </div>

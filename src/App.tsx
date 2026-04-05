@@ -12,7 +12,7 @@ import UserDashboard from './Dashboard/UserDashboard';
 import ServiceSelection from './Service_Select/ServiceSelection'; 
 import Calendar from './calendar/Calendar';
 import Payment from './payment/Payment';
-import ViewProfile from './profile/ViewProfile';
+import ViewProfile from './profile2/ViewProfile';
 
 // Make sure this path matches where you saved the SignUp.tsx file!
 import SignUp from './SignUp/SignUp'; 
