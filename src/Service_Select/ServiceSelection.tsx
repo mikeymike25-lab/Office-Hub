@@ -7,6 +7,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 interface Service {
   id: number;
   title: string;
+  category: string; 
   duration: string;
   price: string;
   capacity: string;
@@ -107,15 +108,22 @@ const ServiceSelection: React.FC = () => {
     setSelectedService(null);
   };
 
-  const handleCalendarRedirect = () => {
-    // Save to localStorage just like your JS did
-    localStorage.setItem("selectedRoom", selectedService?.title || "");
-    localStorage.setItem("customerName", bookingData.name);
-    localStorage.setItem("customerContact", bookingData.contact);
-    
-    navigate('/calendar'); // Adjust this path to match your App.tsx
-  };
+const handleCalendarRedirect = () => {
+  // 1. Validation Check: Trim removes empty spaces
+  if (!bookingData.name.trim() || !bookingData.contact.trim()) {
+    alert("Please enter your Name and Contact details before proceeding!");
+    return; // This STOPS the function right here
+  }
 
+  // 2. If the check passes, save to localStorage
+  localStorage.setItem("selectedRoom", selectedService?.title || "");
+  localStorage.setItem("customerName", bookingData.name);
+  localStorage.setItem("customerContact", bookingData.contact);
+  localStorage.setItem("customerCompany", bookingData.company || "N/A");
+  
+  // 3. Move to the calendar
+  navigate('/calendar'); 
+};
   return (
     <div className="min-h-screen bg-[#d1d5db] flex flex-col font-sans">
       
@@ -302,18 +310,33 @@ const ServiceSelection: React.FC = () => {
 
             {/* Modal Footer */}
             <div className="px-8 pb-8 flex justify-between">
-              <button 
-                onClick={closeModal}
-                className="bg-[#435e7a] text-white px-8 py-2 rounded-xl font-bold hover:brightness-110 transition-all"
-              >
-                CANCEL
-              </button>
-              <button 
-                onClick={handleCalendarRedirect}
-                className="bg-[#8da9c4] text-white px-8 py-2 rounded-xl font-bold hover:brightness-110 transition-all"
-              >
-                CALENDAR
-              </button>
+     {/* --- BUTTON GROUP --- */}
+<div className="flex gap-4 mt-8 w-full">
+  
+  {/* CANCEL BUTTON */}
+  <button 
+    type="button"
+    onClick={closeModal}
+    className="flex-1 bg-[#435e7a] text-white py-3 rounded-xl font-bold hover:brightness-110 transition-all"
+  >
+    CANCEL
+  </button>
+
+  {/* CALENDAR BUTTON */}
+  <button 
+    type="button"
+    onClick={handleCalendarRedirect}
+    disabled={!bookingData.name.trim() || !bookingData.contact.trim()}
+    className={`flex-1 py-3 rounded-xl font-bold transition-all ${
+      (!bookingData.name.trim() || !bookingData.contact.trim()) 
+        ? "bg-gray-400 cursor-not-allowed opacity-50" 
+        : "bg-[#355872] text-white hover:bg-[#2d4b61]"
+    }`}
+  >
+    CALENDAR
+  </button>
+
+</div>
             </div>
           </div>
         </div>
