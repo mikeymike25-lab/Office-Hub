@@ -69,7 +69,7 @@ const LandingPage: React.FC = () => {
             >
               {/* Profile Image - Fixed alignment */}
               <img 
-                src={user?.photoURL || "Images/userprofile.png"} 
+                src={user?.photoURL || "Images/PlaceHolderOH.jpg"} 
                 alt="userprofile" 
                 className="h-[60px] w-[60px] md:h-[70px] md:w-[70px] cursor-pointer rounded-full object-cover shadow-sm border-2 border-white/20" 
               />

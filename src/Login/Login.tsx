@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { auth, googleProvider } from '../firebase'; 
 import { signInWithPopup, signInWithEmailAndPassword, FacebookAuthProvider } from 'firebase/auth';
-// Added useNavigate here:
 import { Link, useNavigate } from 'react-router-dom'; 
 
 const Login: React.FC = () => {
@@ -40,8 +39,10 @@ const Login: React.FC = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("Logged in user:", userCredential.user);
-      // REDIRECT TO DASHBOARD ON SUCCESS
-      navigate('/dashboard'); 
+      
+      // CHANGED: Redirect to the Service Select page instead of Dashboard
+      navigate('/services'); 
+      
     } catch (error: any) {
       setErrorMsg(error.message);
     }
@@ -54,8 +55,10 @@ const Login: React.FC = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log("Google Sign-In Success:", result.user);
-      // REDIRECT TO DASHBOARD ON SUCCESS
-      navigate('/dashboard');
+      
+      // CHANGED: Redirect to the Service Select page instead of Dashboard
+      navigate('/services');
+      
     } catch (error: any) {
       console.error("Error during Google Sign-in:", error);
       setErrorMsg("Google Sign-in failed. Please try again.");
@@ -71,8 +74,10 @@ const Login: React.FC = () => {
     try {
       const result = await signInWithPopup(auth, facebookProvider);
       console.log("Facebook Sign-In Success:", result.user);
-      // REDIRECT TO DASHBOARD ON SUCCESS
-      navigate('/dashboard');
+      
+      // CHANGED: Redirect to the Service Select page instead of Dashboard
+      navigate('/services');
+      
     } catch (error: any) {
       console.error("Error during Facebook Sign-in:", error);
       if (error.code === 'auth/account-exists-with-different-credential') {
@@ -174,6 +179,7 @@ const Login: React.FC = () => {
                 className="absolute right-[.95rem] top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-[#9CD5FF]/50 flex p-0 transition-colors duration-200 hover:text-[#9CD5FF]" 
                 onClick={togglePasswordVisibility} 
                 aria-label="Show/hide password"
+                type="button"
               >
                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               </button>
@@ -191,6 +197,7 @@ const Login: React.FC = () => {
             <button 
               className="w-full p-3.5 bg-[#4ADE80] border-none rounded-xl text-[#0f2e1a] font-['Syne',sans-serif] text-base font-extrabold tracking-wide cursor-pointer transition-all duration-200 shadow-[0_4px_20px_rgba(74,222,128,.3)] hover:bg-[#22c55e] hover:-translate-y-[1px] hover:shadow-[0_8px_28px_rgba(74,222,128,.4)] active:translate-y-0" 
               onClick={handleManualLogin}
+              type="button"
             >
               ENTER
             </button>
@@ -202,24 +209,24 @@ const Login: React.FC = () => {
 
             {/* Social Buttons */}
             <div className="flex gap-3 justify-center">
-              <a href="#" className="flex-1 flex items-center justify-center gap-2 p-[.7rem] bg-[#F7F8F0]/5 border-[1.5px] border-[#9CD5FF]/15 rounded-[11px] text-[#F7F8F0]/65 font-sans text-[.8rem] font-medium cursor-pointer transition-all duration-200 no-underline hover:bg-[#9CD5FF]/10 hover:border-[#9CD5FF]/30 hover:text-[#F7F8F0]" onClick={handleFacebookSignIn}>
+              <button className="flex-1 flex items-center justify-center gap-2 p-[.7rem] bg-[#F7F8F0]/5 border-[1.5px] border-[#9CD5FF]/15 rounded-[11px] text-[#F7F8F0]/65 font-sans text-[.8rem] font-medium cursor-pointer transition-all duration-200 no-underline hover:bg-[#9CD5FF]/10 hover:border-[#9CD5FF]/30 hover:text-[#F7F8F0]" onClick={handleFacebookSignIn} type="button">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="#7AAACE">
                   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                 </svg>
                 Facebook
-              </a>
-              <a href="#" className="flex-1 flex items-center justify-center gap-2 p-[.7rem] bg-[#F7F8F0]/5 border-[1.5px] border-[#9CD5FF]/15 rounded-[11px] text-[#F7F8F0]/65 font-sans text-[.8rem] font-medium cursor-pointer transition-all duration-200 no-underline hover:bg-[#9CD5FF]/10 hover:border-[#9CD5FF]/30 hover:text-[#F7F8F0]" onClick={handleGoogleSignIn}>
+              </button>
+              <button className="flex-1 flex items-center justify-center gap-2 p-[.7rem] bg-[#F7F8F0]/5 border-[1.5px] border-[#9CD5FF]/15 rounded-[11px] text-[#F7F8F0]/65 font-sans text-[.8rem] font-medium cursor-pointer transition-all duration-200 no-underline hover:bg-[#9CD5FF]/10 hover:border-[#9CD5FF]/30 hover:text-[#F7F8F0]" onClick={handleGoogleSignIn} type="button">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                   <circle cx="12" cy="12" r="10" />
                   <path d="M12 8v4l3 3" />
                 </svg>
                 Google
-              </a>
+              </button>
             </div>
 
             {/* Footer Links */}
             <p className="text-center mt-7 text-[.82rem] text-[#F7F8F0]/40">
-              Don't have an account? <Link to="/signin" className="text-[#9CD5FF] no-underline font-medium transition-colors hover:text-white">Sign up</Link>
+              Don't have an account? <Link to="/register" className="text-[#9CD5FF] no-underline font-medium transition-colors hover:text-white">Sign up</Link>
             </p>
             
           </div>

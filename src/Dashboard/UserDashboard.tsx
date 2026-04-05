@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase'; // Make sure this path points to your firebase config file
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase'; 
 
 const UserDashboard: React.FC = () => {
-  // --- STATE MANAGEMENT ---
-  
   // User State from Firebase
   const [user, setUser] = useState<any>(null);
+  const [userData, setUserData] = useState<any>({}); // State to hold extended Firestore profile
 
   // Modal States
   const [activeModal, setActiveModal] = useState<'profile' | 'account' | 'signOut' | 'editProfile' | null>(null);
@@ -17,35 +17,45 @@ const UserDashboard: React.FC = () => {
   const [showEditPassword, setShowEditPassword] = useState(false);
 
   // Profile Picture Upload States
-  const [profileImage, setProfileImage] = useState<string>("Images/userprofile.png");
+  const [profileImage, setProfileImage] = useState<string>("Images/PlaceHolderOH.jpg");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  // Listen for Firebase Auth state to pull in the user's picture and info
+  // Listen for Firebase Auth state and pull Firestore Data
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        // If the user logged in with Google/FB and has a photo, display it
         if (currentUser.photoURL) {
           setProfileImage(currentUser.photoURL);
         }
+        
+        // Fetch the extended user data from Firestore
+        try {
+          const userDocRef = doc(db, 'users', currentUser.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            setUserData(userDocSnap.data());
+          }
+        } catch (error) {
+          console.error("Error fetching user data from Firestore:", error);
+        }
+      } else {
+        setUser(null);
+        setUserData({});
       }
     });
     return () => unsubscribe();
   }, []);
 
-  // --- HANDLERS ---
-
   const closeModal = () => {
     setActiveModal(null);
-    setPreviewUrl(null); // Reset preview when closing modal
+    setPreviewUrl(null); 
   };
 
-  // Drag & Drop Handlers
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -88,19 +98,17 @@ const UserDashboard: React.FC = () => {
 
   const handleSaveProfilePicture = () => {
     if (previewUrl) {
-      // Updates the image on the UI immediately
       setProfileImage(previewUrl);
       alert('Profile picture updated successfully!');
       closeModal();
     }
   };
 
-  // Sign Out logic
   const handleSignOut = async () => {
     try {
       await signOut(auth);
       closeModal();
-      navigate('/'); // Kick them back to the landing page
+      navigate('/'); 
     } catch (error) {
       console.error("Error signing out:", error);
       alert("Failed to sign out.");
@@ -108,46 +116,27 @@ const UserDashboard: React.FC = () => {
   };
 
   return (
-    // Applied background image to the main wrapper
     <div className="min-h-screen bg-[url('Images/Co-workingSpace.jpeg')] bg-cover bg-fixed flex flex-col">
       
-      {/* --- NAVBAR --- */}
-      {/* Updated to perfectly match the Landing Page alignment and 70px sizing */}
       <nav className="bg-[#355872] px-4 md:px-8 py-3 relative z-10 shadow-md">
         <div className="container mx-auto flex justify-between items-center h-[70px]">
-          
-          {/* Logo - Fixed alignment to center vertically */}
           <Link to="/" className="flex items-center h-full">
-            <img 
-              src="Images/officehublogo.png" 
-              alt="officehub" 
-              className="h-[60px] md:h-[70px] w-auto drop-shadow-sm object-contain" 
-            />
+            <img src="Images/officehublogo.png" alt="officehub" className="h-[60px] md:h-[70px] w-auto drop-shadow-sm object-contain" />
           </Link>
-
           <h2 className="text-white font-bold m-0 text-xl md:text-2xl tracking-wide hidden sm:block">
             USER DASHBOARD
           </h2>
-
-          {/* Profile Picture - Fixed alignment and sizing */}
           <div className="flex items-center h-full">
             <Link to="/dashboard" className="flex items-center justify-center transition-transform hover:scale-105">
-              <img 
-                src={profileImage} 
-                alt="userprofile" 
-                id="userprofilepic" 
-                className="h-[60px] w-[60px] md:h-[70px] md:w-[70px] rounded-full object-cover shadow-sm border-2 border-white/20 bg-white" 
-              />
+              <img src={profileImage} alt="userprofile" className="h-[60px] w-[60px] md:h-[70px] md:w-[70px] rounded-full object-cover shadow-sm border-2 border-white/20 bg-white" />
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* --- MAIN DASHBOARD LAYOUT --- */}
       <div className="flex-1 flex flex-col lg:flex-row items-start bg-gradient-to-b from-[#35587226] to-[#f7f8f0bf] p-6 md:p-12 gap-8 w-full">
         <div className="max-w-[1400px] mx-auto w-full flex flex-col lg:flex-row gap-8">
           
-          {/* Sidebar */}
           <aside className="flex-none w-full lg:w-[320px] bg-[#e7e6e6bf] rounded-2xl shadow-xl p-8 flex flex-col gap-8 backdrop-blur-sm border border-white/40">
             <div className="flex flex-col items-center text-center gap-4">
               <div className="w-[120px] h-[120px] rounded-full overflow-hidden border-4 border-[#35587259] bg-[#ffffffd9] shadow-md transition-transform hover:scale-105">
@@ -156,9 +145,8 @@ const UserDashboard: React.FC = () => {
                 </button>
               </div>
               <div>
-                {/* Dynamically display user's name and email */}
                 <h2 className="text-[1.7rem] font-bold m-0 text-[#1F2A37]">
-                  {user?.displayName || "Office Hub User"}
+                  {userData?.username || user?.displayName || "Office Hub User"}
                 </h2>
                 <h6 className="text-[0.9rem] font-medium text-[#1F2A37]/70 mt-1">
                   {user?.email || "YourEmail@gmail.com"}
@@ -179,7 +167,6 @@ const UserDashboard: React.FC = () => {
             </nav>
           </aside>
 
-          {/* Main Content (Edit Card) */}
           <main className="flex-1 w-full flex items-start justify-center">
             <div className="w-full max-w-[860px] bg-[#e7e6e6bf] rounded-[1.4rem] shadow-2xl py-8 px-6 md:px-10 border border-[#35587229] backdrop-blur-sm">
               <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b-4 border-[#35587240] mb-8">
@@ -193,33 +180,33 @@ const UserDashboard: React.FC = () => {
                 <div className="flex flex-col md:flex-row gap-5">
                   <div className="flex-1 flex flex-col gap-2">
                     <label htmlFor="username" className="font-semibold text-[#22303F]">Username</label>
-                    <input id="username" type="text" value={user?.displayName || "User-Name"} readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
+                    <input id="username" type="text" value={userData?.username || user?.displayName || ""} placeholder="User-Name" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
                   </div>
                   <div className="flex-1 flex flex-col gap-2">
                     <label htmlFor="email" className="font-semibold text-[#22303F]">Email</label>
-                    <input id="email" type="email" value={user?.email || "YourEmail@gmail.com"} readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
+                    <input id="email" type="email" value={user?.email || ""} placeholder="YourEmail@gmail.com" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
                   </div>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-5">
                   <div className="flex-1 flex flex-col gap-2">
                     <label htmlFor="firstName" className="font-semibold text-[#22303F]">First Name</label>
-                    <input id="firstName" type="text" placeholder="First-Name" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
+                    <input id="firstName" type="text" value={userData?.firstName || ""} placeholder="First-Name" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
                   </div>
                   <div className="flex-1 flex flex-col gap-2">
                     <label htmlFor="lastName" className="font-semibold text-[#22303F]">Last Name</label>
-                    <input id="lastName" type="text" placeholder="Last-Name" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
+                    <input id="lastName" type="text" value={userData?.lastName || ""} placeholder="Last-Name" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
                   </div>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-5">
                   <div className="flex-1 flex flex-col gap-2">
                     <label htmlFor="birthdate" className="font-semibold text-[#22303F]">Birthdate</label>
-                    <input id="birthdate" type="date" placeholder="MM/DD/YYYY" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
+                    <input id="birthdate" type="date" value={userData?.birthdate || ""} placeholder="MM/DD/YYYY" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
                   </div>
                   <div className="flex-1 flex flex-col gap-2">
                     <label htmlFor="phone" className="font-semibold text-[#22303F]">Phone Number</label>
-                    <input id="phone" type="tel" placeholder="0912-345-6789" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
+                    <input id="phone" type="tel" value={userData?.phoneNumber || ""} placeholder="0912-345-6789" readOnly className="h-14 rounded-2xl border border-[#35587240] px-4 text-base bg-white/80 text-[#1F2A37] w-full focus:outline-none cursor-not-allowed opacity-80" />
                   </div>
                 </div>
 
@@ -248,9 +235,7 @@ const UserDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* --- MODALS --- */}
-
-      {/* 1. Profile Picture Modal */}
+      {/* Profile Picture Modal */}
       {activeModal === 'profile' && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onClick={closeModal}>
           <div className="bg-white p-6 md:p-8 rounded-2xl w-full max-w-[500px] text-center relative shadow-2xl animate-fade-in-up" onClick={(e) => e.stopPropagation()}>
@@ -291,7 +276,7 @@ const UserDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* 2. Change Account Modal */}
+      {/* Change Account Modal */}
       {activeModal === 'account' && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onClick={closeModal}>
           <div className="bg-white p-6 md:p-8 rounded-2xl w-full max-w-[450px] text-center relative shadow-2xl" onClick={(e) => e.stopPropagation()}>
@@ -310,7 +295,7 @@ const UserDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* 3. Sign Out Modal */}
+      {/* Sign Out Modal */}
       {activeModal === 'signOut' && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onClick={closeModal}>
           <div className="bg-white p-6 md:p-8 rounded-2xl w-full max-w-[450px] text-center relative shadow-2xl" onClick={(e) => e.stopPropagation()}>
@@ -332,7 +317,7 @@ const UserDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* 4. Edit Profile Modal */}
+      {/* Edit Profile Modal */}
       {activeModal === 'editProfile' && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onClick={closeModal}>
           <div className="bg-white p-6 md:p-8 rounded-2xl w-full max-w-[700px] text-center relative shadow-2xl" onClick={(e) => e.stopPropagation()}>
@@ -344,33 +329,33 @@ const UserDashboard: React.FC = () => {
               <div className="flex flex-col md:flex-row gap-5">
                 <div className="flex-1 flex flex-col gap-2">
                   <label className="font-semibold text-[#22303F]">Username</label>
-                  <input type="text" placeholder="User-Name" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
+                  <input type="text" defaultValue={userData?.username || user?.displayName || ""} placeholder="User-Name" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
                 </div>
                 <div className="flex-1 flex flex-col gap-2">
                   <label className="font-semibold text-[#22303F]">Email</label>
-                  <input type="email" placeholder="YourEmail@gmail.com" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
+                  <input type="email" defaultValue={user?.email || ""} placeholder="YourEmail@gmail.com" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
                 </div>
               </div>
 
               <div className="flex flex-col md:flex-row gap-5">
                 <div className="flex-1 flex flex-col gap-2">
                   <label className="font-semibold text-[#22303F]">First Name</label>
-                  <input type="text" placeholder="First-Name" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
+                  <input type="text" defaultValue={userData?.firstName || ""} placeholder="First-Name" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
                 </div>
                 <div className="flex-1 flex flex-col gap-2">
                   <label className="font-semibold text-[#22303F]">Last Name</label>
-                  <input type="text" placeholder="Last-Name" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
+                  <input type="text" defaultValue={userData?.lastName || ""} placeholder="Last-Name" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
                 </div>
               </div>
 
               <div className="flex flex-col md:flex-row gap-5">
                 <div className="flex-1 flex flex-col gap-2">
                   <label className="font-semibold text-[#22303F]">Birthdate</label>
-                  <input type="date" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
+                  <input type="date" defaultValue={userData?.birthdate || ""} className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
                 </div>
                 <div className="flex-1 flex flex-col gap-2">
                   <label className="font-semibold text-[#22303F]">Phone Number</label>
-                  <input type="tel" placeholder="0912-345-6789" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
+                  <input type="tel" defaultValue={userData?.phoneNumber || ""} placeholder="0912-345-6789" className="h-12 rounded-xl border border-gray-300 px-4 text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#355872] transition-all w-full" />
                 </div>
               </div>
 

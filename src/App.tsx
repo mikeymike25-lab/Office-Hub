@@ -5,12 +5,14 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { auth } from './firebase'; 
 
 // Import all of your page components
-import Landing from './LandingPage/LandingPage';
+import LandingPage from './LandingPage/LandingPage';
 import Login from './Login/Login';
+import SignUp from './SignUp/SignUp';
 import UserDashboard from './Dashboard/UserDashboard'; 
-// ADDED: Import your new SignUp component
-// Make sure this path matches where you saved the SignUp.tsx file!
-import SignUp from './SignUp/SignUp'; 
+import ServiceSelect from './ServiceSelect/ServiceSelect'; 
+import Calendar from './Calendar/Calendar';
+import Payment from './Payment/Payment';
+import ServiceDetails from './ServiceDetails/ServiceDetails'; 
 
 const App: React.FC = () => {
   // State to track if the user is logged in
@@ -41,38 +43,50 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* --- PUBLIC ROUTES --- */}
         {/* The "/" path sets the Landing page as the default start screen */}
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/ServiceDetails" element={<ServiceDetails />} />
         
-        {/* LOGIN ROUTE: 
-          If there is NO user (!user), show the Login page. 
-          If they ARE logged in, kick them straight to the dashboard.
+        {/* LOGIN & SIGN UP ROUTES: 
+          If they ARE logged in, kick them straight to the Services page now.
         */}
         <Route 
           path="/login" 
-          element={!user ? <Login /> : <Navigate to="/dashboard" replace />} 
+          element={!user ? <Login /> : <Navigate to="/services" replace />} 
         />
-
-        {/* SIGN UP ROUTES: 
-          Added routes for both /register and /signin to map to the SignUp component
-        */}
         <Route 
           path="/register" 
-          element={!user ? <SignUp /> : <Navigate to="/dashboard" replace />} 
+          element={!user ? <SignUp /> : <Navigate to="/services" replace />} 
         />
         <Route 
           path="/signin" 
-          element={!user ? <SignUp /> : <Navigate to="/dashboard" replace />} 
+          element={!user ? <SignUp /> : <Navigate to="/services" replace />} 
         />
 
-        {/* DASHBOARD ROUTE (PROTECTED): 
-          If there IS a user, show the Dashboard. 
-          If they are NOT logged in, kick them back to the login screen.
-        */}
+        {/* --- PROTECTED ROUTES --- */}
+        {/* If there IS a user, show the page. If not, kick back to login. */}
+        
         <Route 
           path="/dashboard" 
           element={user ? <UserDashboard /> : <Navigate to="/login" replace />} 
         />
+
+        <Route 
+          path="/services" 
+          element={user ? <ServiceSelect /> : <Navigate to="/login" replace />} 
+        />
+
+        <Route 
+          path="/calendar" 
+          element={user ? <Calendar /> : <Navigate to="/login" replace />} 
+        />
+
+        <Route 
+          path="/payment" 
+          element={user ? <Payment /> : <Navigate to="/login" replace />} 
+        />
+
       </Routes>
     </BrowserRouter>
   );

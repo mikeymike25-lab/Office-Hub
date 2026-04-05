@@ -1,6 +1,6 @@
-
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database"; 
+import { getFirestore } from "firebase/firestore"; // Added Firestore import
 import { getAuth, GoogleAuthProvider } from "firebase/auth"; 
 
 const firebaseConfig = {
@@ -17,10 +17,13 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize and export the database so you can use it in other files
+// Initialize and export the Realtime Database (Keep this if you are using it elsewhere)
 export const database = getDatabase(app);
 
-// NEW: Initialize and export Auth and Google Provider for your Login page
+// NEW: Initialize and export Firestore (Required for the new SignUp and Dashboard code)
+export const db = getFirestore(app);
+
+// Initialize and export Auth and Google Provider
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
