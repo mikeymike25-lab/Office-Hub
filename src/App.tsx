@@ -9,10 +9,10 @@ import LandingPage from './LandingPage/LandingPage';
 import Login from './Login/Login';
 import SignUp from './SignUp/SignUp';
 import UserDashboard from './Dashboard/UserDashboard'; 
-import ServiceSelect from './ServiceSelect/ServiceSelect'; 
 import Calendar from './Calendar/Calendar';
 import Payment from './Payment/Payment';
 import ServiceDetails from './ServiceDetails/ServiceDetails'; 
+import ServiceSelect from './ServiceSelect/ServiceSelect';
 
 const App: React.FC = () => {
   // State to track if the user is logged in
@@ -74,7 +74,7 @@ const App: React.FC = () => {
 
         <Route 
           path="/services" 
-          element={user ? <ServiceSelect /> : <Navigate to="/login" replace />} 
+          element={user ? <ServiceSelect/> : <Navigate to="/login" replace />} 
         />
 
         <Route 

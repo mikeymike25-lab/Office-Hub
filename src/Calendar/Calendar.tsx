@@ -1,9 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { auth } from '../firebase'; // Adjust this path to match your folder structure
 
 const Calendar: React.FC = () => {
   const navigate = useNavigate();
 
+const [profileImage, setProfileImage] = useState<string>(
+  localStorage.getItem("user_profile_pfp") || "/Images/userprofile.png"
+);
+
+  useEffect(() => {
+  const unsubscribe = auth.onAuthStateChanged((user) => {
+    const savedPhoto = localStorage.getItem("user_profile_pfp");
+    if (savedPhoto) {
+      setProfileImage(savedPhoto);
+    } else if (user && user.photoURL) {
+      setProfileImage(user.photoURL);
+    }
+  });
+  return () => unsubscribe();
+}, []);
   // State to track the currently viewed month and year
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -88,10 +104,14 @@ const Calendar: React.FC = () => {
           <h2 className="text-white font-black text-[2rem] tracking-[2px] m-0 font-sans">CALENDAR</h2>
         </div>
         <div className="flex-1 flex justify-end">
-          <Link to="/dashboard">
-            <img src="/Images/userprofile.png" alt="userprofile" className="h-[70px] w-[70px] rounded-full object-cover" />
-          </Link>
-        </div>
+  <Link to="/dashboard" className="flex items-center justify-center transition-transform hover:scale-105">
+    <img 
+      src={profileImage} 
+      alt="userprofile" 
+      className="h-[60px] w-[60px] md:h-[55px] md:w-[55px] rounded-full object-cover shadow-sm border-2 border-white/20 bg-white" 
+    />
+  </Link>
+</div>
       </nav>
 
       {/* Main Content */}
