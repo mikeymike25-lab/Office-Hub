@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
 
 const Payment: React.FC = () => {
   const navigate = useNavigate();
-
+  // This checks the "mailbox" immediately when the page opens
+const [profileImage, setProfileImage] = useState<string>(
+  localStorage.getItem("user_profile_pfp") || "/Images/userprofile.png"
+);
   // State for the Receipt Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState('');
@@ -17,19 +21,36 @@ const Payment: React.FC = () => {
   });
 
   // Pull data from localStorage when the component loads
+  // Pull data from localStorage when the component loads
   useEffect(() => {
-    const savedRoom = localStorage.getItem("selectedRoom") || 'Quiet Corner';
-    const savedName = localStorage.getItem("customerName") || 'Not Provided';
-    const savedDate = localStorage.getItem("selectedBookingDate") || 'Date Not Selected';
+  // 1. Load the booking data (Keep your existing code here)
+  const savedRoom = localStorage.getItem("selectedRoom") || 'Quiet Corner';
+  const savedName = localStorage.getItem("customerName") || 'Not Provided';
+  const savedDate = localStorage.getItem("selectedBookingDate") || 'Date Not Selected';
+  const savedPrice = localStorage.getItem("roomPrice") || '0$';
 
-    setBookingData({
-      room: savedRoom,
-      name: savedName,
-      date: savedDate,
-      price: '$850.00' // Hardcoded as per original HTML
-    });
-  }, []);
+  setBookingData({
+    room: savedRoom,
+    name: savedName,
+    date: savedDate,
+    price: savedPrice
+  });
 
+  // 2. Load the Profile Image logic
+  const unsubscribe = auth.onAuthStateChanged((user) => {
+    const savedPhoto = localStorage.getItem("user_profile_pfp");
+    
+    if (savedPhoto) {
+      // If we found a custom upload in the mailbox, use it!
+      setProfileImage(savedPhoto);
+    } else if (user && user.photoURL) {
+      // Otherwise, if they are logged in with Google, use that
+      setProfileImage(user.photoURL);
+    }
+  });
+
+  return () => unsubscribe();
+}, []); // The empty brackets mean this runs once when the page opens
   // Handlers
   const handleOpenReceipt = (method: string) => {
     setSelectedMethod(method);
@@ -41,15 +62,12 @@ const Payment: React.FC = () => {
     setSelectedMethod('');
   };
 
-  const handleConfirmAndPay = () => {
-    // If they click the main CONFIRM button, prompt to pick a payment method first,
-    // or just show the receipt defaulting to Onsite Payment.
-    if (!selectedMethod) {
-      handleOpenReceipt('Onsite Payment');
-    } else {
-      handleOpenReceipt(selectedMethod);
-    }
-  };
+  const handleCancelPayment = () => {
+  // Optional: You can add a confirm() here if you want to be safe
+  if (window.confirm("Are you sure you want to cancel? Your booking data will be lost.")) {
+    navigate('/calendar');
+  }
+};
 
   const finalSubmit = () => {
     alert("Payment Successful! Redirecting to your dashboard...");
@@ -78,10 +96,14 @@ const Payment: React.FC = () => {
           <h2 className="text-white font-black text-[2rem] tracking-[2px] m-0 font-sans">PAYMENT</h2>
         </div>
         <div className="flex-1 flex justify-end">
-          <Link to="/dashboard" className="transition-transform duration-200 hover:scale-110 hover:opacity-80">
-            <img src="/Images/userprofile.png" alt="userprofile" className="h-[70px] w-[70px] rounded-full object-cover" />
-          </Link>
-        </div>
+  <Link to="/dashboard">
+    <img 
+      src={profileImage} // Ensure this is exactly "profileImage"
+      alt="userprofile" 
+      className="h-[60px] w-[60px] md:h-[55px] md:w-[55px] rounded-full object-cover shadow-sm border-2 border-white/20 bg-white" 
+    />
+  </Link>
+</div>
       </nav>
 
       {/* Main Content Area */}
@@ -92,7 +114,7 @@ const Payment: React.FC = () => {
           <h2 className="font-bold text-2xl mb-4">PAYMENT SUMMARY</h2>
           <ul className="list-none p-0 leading-loose text-gray-800">
             <li><strong>ROOM BOOKED:</strong> <span>{bookingData.room}</span></li>
-            <li><strong>CUSTOMER / PAX:</strong> <span>{bookingData.name}</span></li>
+            <li><strong>CUSTOMER:</strong> <span>{bookingData.name}</span></li>
             <li><strong>SCHEDULE:</strong> <span>{bookingData.date}</span></li>
             <li><strong>PRICE:</strong> <span>{bookingData.price}</span></li>
           </ul>
@@ -109,8 +131,8 @@ const Payment: React.FC = () => {
             onClick={() => handleOpenReceipt('Gcash')}
             className="bg-[#7da0c1] border-none rounded-r-[20px] flex items-center p-[15px_30px] w-[300px] cursor-pointer shadow-[5px_5px_15px_rgba(0,0,0,0.1)] transition-all duration-200 text-left font-bold text-gray-900 hover:translate-x-2.5 hover:bg-[#6a8fb1]"
           >
-            <div className="bg-white rounded-full w-10 h-10 flex justify-center items-center mr-[15px] border-2 border-[#1a2e44] overflow-hidden p-[5px]">
-              <img src="/Images/gcash logo.jpg" alt="GCash" className="w-[140%] h-[140%] object-contain" />
+            <div className="bg-white rounded-full w-10 h-10 flex justify-center items-center mr-[15px] border-2 border-[#1a2e44] overflow-hidden ">
+              <img src="/Images/gcash logo.jpg" alt="GCash" className="w-[100%] h-[100%] object-cover" />
             </div>
             <div>Gcash</div>
           </button>
@@ -119,8 +141,8 @@ const Payment: React.FC = () => {
             onClick={() => handleOpenReceipt('Pay Maya')}
             className="bg-[#7da0c1] border-none rounded-r-[20px] flex items-center p-[15px_30px] w-[300px] cursor-pointer shadow-[5px_5px_15px_rgba(0,0,0,0.1)] transition-all duration-200 text-left font-bold text-gray-900 hover:translate-x-2.5 hover:bg-[#6a8fb1]"
           >
-            <div className="bg-white rounded-full w-10 h-10 flex justify-center items-center mr-[15px] border-2 border-[#1a2e44] overflow-hidden p-[5px]">
-              <img src="/Images/paymaya logo.png" alt="Maya" className="w-[140%] h-[140%] object-contain" />
+            <div className="bg-white rounded-full w-10 h-10 flex justify-center items-center mr-[15px] border-2 border-[#1a2e44] overflow-hidden ">
+              <img src="/Images/paymaya logo.png" alt="Maya" className="w-[100%] h-[100%] object-cover" />
             </div>
             <div>Pay Maya</div>
           </button>
@@ -136,27 +158,21 @@ const Payment: React.FC = () => {
           </button>
 
           <button 
-            onClick={handleConfirmAndPay}
-            className="bg-[#3e5c76] text-white border-none rounded-r-[20px] flex items-center p-[15px_30px] w-[300px] cursor-pointer shadow-[5px_5px_15px_rgba(0,0,0,0.1)] transition-all duration-200 text-left font-bold hover:translate-x-2.5 hover:brightness-110"
-          >
-            <div className="bg-white rounded-full w-10 h-10 flex justify-center items-center mr-[15px] border-2 border-[#1a2e44] overflow-hidden p-[5px] text-xl">
-              ❗
-            </div>
-            <div>CONFIRM AND PAY</div>
-          </button>
-
+     onClick={handleCancelPayment}
+      className="bg-[#c2410c] text-white border-none rounded-r-[20px] flex items-center p-[15px_30px] w-[300px] cursor-pointer shadow-[5px_5px_15px_rgba(0,0,0,0.1)] transition-all duration-200 text-left font-bold hover:translate-x-2.5 hover:bg-[#9a3412]"
+    >
+      <div className="bg-white rounded-full w-10 h-10 flex justify-center items-center mr-[15px] border-2 border-[#431407] overflow-hidden p-[5px] text-xl">
+        ❌
+      </div>
+      <div>CANCEL PAYMENT</div>
+   </button>
           <p className="text-white text-[0.8rem] mt-0 text-center font-bold drop-shadow-md">
             🔒 Secured with SSL
           </p>
         </section>
       </main>
 
-      {/* Footer Links */}
-      <footer className="text-center mt-auto mb-10">
-        <a href="#" className="mx-2.5 text-white underline hover:text-gray-300">Terms & Conditions</a>
-        <a href="#" className="mx-2.5 text-white underline hover:text-gray-300" onClick={() => navigate('/calendar')}>Cancel Payment</a>
-      </footer>
-
+      
       {/* Receipt Modal Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-[9999]">
@@ -177,7 +193,7 @@ const Payment: React.FC = () => {
               <h3 className="underline mb-5 text-xl font-bold text-gray-800">PAYMENT SUMMARY</h3>
               <div className="text-gray-800 font-['Courier_New',monospace]">
                 <p className="my-2.5"><strong>ROOM BOOKED:</strong> <span>{bookingData.room}</span></p>
-                <p className="my-2.5"><strong>CUSTOMER / PAX:</strong> <span>{bookingData.name}</span></p>
+                <p className="my-2.5"><strong>CUSTOMER:</strong> <span>{bookingData.name}</span></p>
                 <p className="my-2.5"><strong>SCHEDULE:</strong> <span>{bookingData.date}</span></p>
                 <p className="my-2.5"><strong>PAYMENT METHOD:</strong> <span className="text-[#3e5c76] font-bold">{selectedMethod}</span></p>
                 <hr className="border-gray-400 my-4" />
