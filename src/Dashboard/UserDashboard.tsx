@@ -172,12 +172,12 @@ useEffect(() => {
 
           {/* Profile Picture - Fixed alignment and sizing */}
          <div className="flex items-center justify-center">
-  <img 
-    src={profileImage} 
-    alt="userprofile" 
-    className="h-[60px] w-[60px] md:h-[55px] md:w-[55px] rounded-full object-cover shadow-sm border-2 border-white/20 bg-white" 
-  />
-</div>
+      <img 
+       src={profileImage} 
+        alt="userprofile" 
+      className="h-[60px] w-[60px] md:h-[55px] md:w-[55px] rounded-full object-cover shadow-sm border-2 border-white/20 bg-white" 
+       />
+      </div>
         </div>
       </nav>
 
@@ -188,16 +188,16 @@ useEffect(() => {
           {/* Sidebar */}
           <aside className="flex-none w-full lg:w-[320px] bg-[#e7e6e6bf] rounded-2xl shadow-xl p-8 flex flex-col gap-8 backdrop-blur-sm border border-white/40">
             <div className="flex flex-col items-center text-center gap-4">
-  {/* Now just a div container, no button/link around it */}
-  <div 
-  onClick={() => setActiveModal('profile')} // Opens the modal when clicking the circle
-  className="w-[120px] h-[120px] rounded-full overflow-hidden border-4 border-[#35587259] bg-[#ffffffd9] shadow-md transition-all hover:scale-105 hover:border-[#355872] cursor-pointer"
-  title="Click to change photo"
->
-  <img 
-    src={profileImage} 
-    alt="User Profile" 
-    className="w-full h-full object-cover block" 
+       {/* Now just a div container, no button/link around it */}
+      <div 
+     onClick={() => setActiveModal('profile')} // Opens the modal when clicking the circle
+     className="w-[120px] h-[120px] rounded-full overflow-hidden border-4 border-[#35587259] bg-[#ffffffd9] shadow-md transition-all hover:scale-105 hover:border-[#355872] cursor-pointer"
+      title="Click to change photo"
+      >
+      <img 
+       src={profileImage} 
+       alt="User Profile" 
+        className="w-full h-full object-cover block" 
   />
 </div>
   
@@ -218,6 +218,9 @@ useEffect(() => {
              </button>
               <button className="py-3 px-4 rounded-xl text-left font-semibold text-[#1F2A37] bg-[#35587214] transition-colors hover:bg-[#35587240] hover:text-[#0B1B2A] border-none cursor-pointer" onClick={() => setActiveModal('account')}>
                 Change Account
+              </button>
+              <button className="py-3 px-4 rounded-xl text-left font-semibold text-[#1F2A37] bg-[#35587214] transition-colors hover:bg-[#35587240] hover:text-[#0B1B2A] border-none cursor-pointer" onClick={() => navigate('/service-details')}>
+                About Services
               </button>
               <button className="py-3 px-4 rounded-xl text-left font-semibold text-[#1F2A37] bg-[#35587214] transition-colors hover:bg-[#35587240] hover:text-[#0B1B2A] border-none cursor-pointer" onClick={() => setActiveModal('signOut')}>
                 Sign out

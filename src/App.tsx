@@ -86,6 +86,10 @@ const App: React.FC = () => {
           path="/payment" 
           element={user ? <Payment /> : <Navigate to="/login" replace />} 
         />
+        <Route 
+          path="/service-details" 
+          element={user ? <ServiceDetails /> : <Navigate to="/login" replace />} 
+        />
 
       </Routes>
     </BrowserRouter>
