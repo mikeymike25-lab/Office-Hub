@@ -162,7 +162,7 @@ const ServiceDetails: React.FC = () => {
       <nav className="bg-[#355872] px-4 md:px-8 py-3 relative z-10 shadow-md">
         <div className="container mx-auto flex justify-between items-center h-[70px]">
           
-          <Link to="/dashboard" className="flex items-center h-full">
+          <Link to="/dashboard2" className="flex items-center h-full">
             <img 
               src="Images/officehublogo.png" 
               alt="officehub" 

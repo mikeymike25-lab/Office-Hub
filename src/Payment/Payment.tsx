@@ -69,18 +69,33 @@ const [profileImage, setProfileImage] = useState<string>(
   }
 };
 
-  const finalSubmit = () => {
-    alert("Payment Successful! Redirecting to your dashboard...");
+const finalSubmit = () => {
+  // 1. Get the existing ARCHIVE from localStorage
+  const existingBookings = JSON.parse(localStorage.getItem("all_user_bookings") || "[]");
 
-    // Clear the temporary booking data so it's ready for the next booking
-    localStorage.removeItem("selectedBookingDate");
-    localStorage.removeItem("customerName");
-    localStorage.removeItem("customerContact");
-    localStorage.removeItem("selectedRoom");
-
-    // Redirect to dashboard
-    navigate('/dashboard');
+  // 2. Create the new booking object from the current state
+  const newBooking = {
+    id: Date.now(), // Unique ID so we can cancel it later
+    room: bookingData.room,
+    date: bookingData.date,
+    price: bookingData.price,
+    method: selectedMethod
   };
+
+  // 3. Add to the list and save it back to the archive
+  const updatedBookings = [...existingBookings, newBooking];
+  localStorage.setItem("all_user_bookings", JSON.stringify(updatedBookings));
+
+  alert("Payment Successful! Redirecting to your dashboard...");
+
+  // 4. Clear the TEMPORARY data (the "Baton")
+  localStorage.removeItem("selectedBookingDate");
+  localStorage.removeItem("customerName");
+  localStorage.removeItem("selectedRoom");
+  localStorage.removeItem("roomPrice");
+
+  navigate('/dashboard2');
+};
 
   return (
     <div className="min-h-screen bg-[url('/Images/confroom.png')] bg-cover bg-fixed font-sans flex flex-col m-0 p-0">
@@ -88,7 +103,7 @@ const [profileImage, setProfileImage] = useState<string>(
       {/* Navbar */}
       <nav className="flex items-center justify-between bg-[#355872] px-10 h-[90px]">
         <div className="flex-1 flex items-center">
-          <Link to="/calendar" className="transition-transform duration-200 hover:scale-110 hover:opacity-80">
+          <Link to="/dashboard2" className="transition-transform duration-200 hover:scale-110 hover:opacity-80">
             <img src="/Images/officehublogo.png" alt="officehub" className="h-[60px] w-auto" />
           </Link>
         </div>

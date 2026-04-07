@@ -158,7 +158,7 @@ useEffect(() => {
         <div className="container mx-auto flex justify-between items-center h-[70px]">
           
           {/* Logo - Fixed alignment to center vertically */}
-          <Link to="/" className="flex items-center h-full">
+          <Link to="/dashboard2">
             <img 
               src="Images/officehublogo.png" 
               alt="officehub" 
@@ -167,7 +167,7 @@ useEffect(() => {
           </Link>
 
           <h2 className="text-white font-bold m-0 text-xl md:text-2xl tracking-wide hidden sm:block">
-            USER DASHBOARD
+            PROFILE
           </h2>
 
           {/* Profile Picture - Fixed alignment and sizing */}

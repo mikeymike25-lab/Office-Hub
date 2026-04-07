@@ -153,7 +153,7 @@ const handleCalendarRedirect = () => {
       {/* --- NAVBAR --- */}
       <nav className="bg-[#355872] h-[90px] flex items-center justify-between px-10 shadow-lg relative z-20">
         <div className="flex-1">
-          <Link to="/">
+          <Link to="/dashboard2">
             <img src="/Images/officehublogo.png" alt="logo" className="h-[60px] w-auto" />
           </Link>
         </div>

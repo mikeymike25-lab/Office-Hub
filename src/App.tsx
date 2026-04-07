@@ -8,7 +8,8 @@ import { auth } from './firebase';
 import LandingPage from './LandingPage/LandingPage';
 import Login from './Login/Login';
 import SignUp from './SignUp/SignUp';
-import UserDashboard from './Dashboard/UserDashboard'; 
+import UserDashboard from './Dashboard/UserDashboard';
+import Dashboard2 from './Dashboard2/Dashboard2'; 
 import Calendar from './Calendar/Calendar';
 import Payment from './Payment/Payment';
 import ServiceDetails from './ServiceDetails/ServiceDetails'; 
@@ -89,6 +90,10 @@ const App: React.FC = () => {
         <Route 
           path="/service-details" 
           element={user ? <ServiceDetails /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/dashboard2" 
+          element={user ? <Dashboard2 /> : <Navigate to="/login" replace />} 
         />
 
       </Routes>
